@@ -6,6 +6,7 @@ Imports System.Net
 Public Class Form1
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Timer1.Enabled = True
+        Me.WebBrowser1.Navigate("http://autojacker.com/shock2/simple.php")
     End Sub
 
 
@@ -25,8 +26,16 @@ Public Class Form1
             Dim stream_reader As New IO.StreamReader(response)
             Dim string_read As String
             string_read = stream_reader.ReadToEnd()
-            If string_read <> txtResults.Text Then txtLog.Text = string_read + vbCrLf + txtLog.Text
+            If string_read <> txtResults.Text Then
+                txtLog.Text = string_read + vbCrLf + txtLog.Text
+                Dim firstChar = txtResults.Text.Substring(0, 1)
+                'MsgBox("sending-=== " + firstChar)
+                textFinalSend.Text = firstChar
+            End If
+
             txtResults.Text = string_read
+
+
 
             ' Close the stream reader and its underlying stream.
             stream_reader.Close()
@@ -48,5 +57,23 @@ Public Class Form1
         If Label1.Text = 9 Then Label1.Text = 0
         Label1.Text = Label1.Text + 1
         btnFetch_Click(sender, New System.EventArgs())
+
+        txtResults.BackColor = Color.LightCyan
+
+
+        'send if its ready
+        If (textFinalSend.Text <> "") Then
+            'MsgBox(textFinalSend.Text)
+            textFinalSend.Text = "test"
+        End If
+    End Sub
+
+    Private Sub but_launch_Click(sender As Object, e As EventArgs) Handles but_launch.Click
+        sender.text = textContoSite.Text
+        Clipboard.SetText(textContoSite.Text)
+    End Sub
+
+    Private Sub txtResults_TextChanged(sender As Object, e As EventArgs) Handles txtResults.TextChanged
+        MsgBox("on change")
     End Sub
 End Class
